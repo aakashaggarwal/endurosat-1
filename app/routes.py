@@ -11,7 +11,7 @@ import requests
 
 
 def get_result(value_string):
-    response = requests.post('http://134.209.128.19:8080/function/hello-python', data='dasds')
+    response = requests.post('http://134.209.128.19:8080/function/hello-python', data=value_string)
     return response.text
 
 @app.route('/')
