@@ -3,12 +3,14 @@
 {% block content %}
 <!-- Use Flask-WTF to generate form fields -->
 <div class="container column is-8 is-offset-2">
-    <div id="self-code" style="display: none;">
+    <div id="self-code" >
         <label class="label"> Code (Use single quotes, and use req as an input, req is what will also be the output variable)</label>
         <textarea name='code' class="input" id="code">
 
         </textarea>
         <button class="button is-link" id="launch">Launch the template</button>
+        <button class="button is-link" id="check-old">Check older code</button>
+
 
     </div>
 
@@ -16,7 +18,7 @@
         <img src="https://media.giphy.com/media/3y0oCOkdKKRi0/giphy.gif" />
     </div>
 
-    <div id="self-form" >
+    <div id="self-form" style="display: none;">
         <label class="label">Enter the value for the request variable.</label>
         <input type="text" class="input"  id="req_value">
         <button class="button is-link" id="run-code">Run your code</button>
@@ -42,6 +44,11 @@
           $('#self-form').show();
         }, 25000);
 
+    });
+
+    $('#check-old').click(function(){
+        $('#self-code').hide();
+        $('#self-form').show();
     });
 
     $('#run-code').click(function(){
