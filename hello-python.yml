@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://134.209.128.19:8080
+functions:
+  hello-python:
+    lang: python
+    handler: ./hello-python
+    image: aakashaggarwal93/hello-python
+

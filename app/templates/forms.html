@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Use Flask-WTF to generate form fields -->
+<div class="container column is-8 is-offset-2">
+    <div id="self-code">
+        <label class="label"> Code (Use single quotes, and use req as an input, req is what will also be the output variable)</label>
+        <textarea name='code' class="input" id="code">
+
+        </textarea>
+        <button class="button is-link" id="launch">Launch the template</button>
+
+    </div>
+
+    <div id="self-loader" style="display: none;">
+        <img src="https://media.giphy.com/media/3y0oCOkdKKRi0/giphy.gif" />
+    </div>
+
+    <div id="self-form" style="display: none;">
+        <label class="label">Enter the value for the request variable.</label>
+        <input type="text" class="input"  id="req_value">
+        <button class="button is-link" id="run-code">Run your code</button>
+        <div id="response"> </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#launch').click(function(){
+        var code = $('#code').val();
+        var saveData = $.ajax({
+          type: 'POST',
+          url: "/launch?code="+encodeURIComponent(code),
+          dataType: "json",
+          success: function(resultData) { alert("Save Complete") }
+        });
+        $('#self-code').hide();
+        $('#self-loader').show();
+
+        setTimeout(function(){
+          $('#self-loader').hide();
+          $('#self-form').show();
+        }, 20000);
+
+    });
+
+    $('#run-code').click(function(){
+        var url = "http://134.209.128.19:8080/function/hello-python";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+           if (xhr.readyState === 4) {
+              $('#response').html(xhr.responseText);
+           }};
+
+        var data = $('#req_value').val();
+
+        xhr.send(data);
+
+
+    });
+</script>
+{% endblock %}
