@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Use Flask-WTF to generate form fields -->
 <div class="container column is-8 is-offset-2">
-    <div id="self-code">
+    <div id="self-code" style="display: none;">
         <label class="label"> Code (Use single quotes, and use req as an input, req is what will also be the output variable)</label>
         <textarea name='code' class="input" id="code">
 
@@ -16,11 +16,12 @@
         <img src="https://media.giphy.com/media/3y0oCOkdKKRi0/giphy.gif" />
     </div>
 
-    <div id="self-form" style="display: none;">
+    <div id="self-form" >
         <label class="label">Enter the value for the request variable.</label>
         <input type="text" class="input"  id="req_value">
         <button class="button is-link" id="run-code">Run your code</button>
         <div id="response"> </div>
+
     </div>
 </div>
 
@@ -31,7 +32,7 @@
           type: 'POST',
           url: "/launch?code="+encodeURIComponent(code),
           dataType: "json",
-          success: function(resultData) { alert("Save Complete") }
+          success: function(resultData) {  }
         });
         $('#self-code').hide();
         $('#self-loader').show();
@@ -39,26 +40,35 @@
         setTimeout(function(){
           $('#self-loader').hide();
           $('#self-form').show();
-        }, 20000);
+        }, 25000);
 
     });
 
     $('#run-code').click(function(){
-        var url = "http://134.209.128.19:8080/function/hello-python";
+        var saveData = $.ajax({
+          type: 'POST',
+          url: "/result?string_value="+$('#req_value').val(),
+          success: function(resultData) {
+            var url = window.location.origin+'/results/'+resultData
+            $('#response').html("Please go to "+ url + " for the result ")
+        }
+        });
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
+        // var url = "http://134.209.128.19:8080/function/hello-python";
 
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("POST", url);
 
-        xhr.onreadystatechange = function () {
-           if (xhr.readyState === 4) {
-              $('#response').html(xhr.responseText);
-           }};
+        // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        var data = $('#req_value').val();
+        // xhr.onreadystatechange = function () {
+        //    if (xhr.readyState === 4) {
+        //       $('#response').html(xhr.responseText);
+        //    }};
 
-        xhr.send(data);
+        // var data = $('#req_value').val();
+
+        // xhr.send(data);
 
 
     });

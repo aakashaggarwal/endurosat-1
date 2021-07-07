@@ -3,10 +3,16 @@ from flask import render_template, redirect
 from flask import request
 from .forms import SampleForm
 import os
-from flask_dramatiq import Dramatiq
 import urllib
+from rq import Queue
+from rq.job import Job
+from worker import conn
+import requests
 
-dramatiq = Dramatiq()
+
+def get_result(value_string):
+    response = requests.post('http://134.209.128.19:8080/function/hello-python', data='dasds')
+    return response.text
 
 @app.route('/')
 @app.route('/index')
@@ -19,6 +25,16 @@ def index():
         return redirect('index')
 
     return render_template('forms.html', form=form)
+
+@app.route('/result', methods=[ 'POST'])
+def result():
+    jsonData = request.args['string_value']
+    q = Queue(connection=conn)
+
+    job = q.enqueue_call(
+        func=get_result, args=(jsonData,), result_ttl=5000
+    )
+    return str(job.get_id()), 200
 
 
 @app.route('/launch', methods=['GET', 'POST'])
@@ -43,6 +59,16 @@ def launch():
     return {
         "user": "John Doe",
     }
+
+@app.route("/results/<job_key>", methods=['GET'])
+def get_results(job_key):
+
+    job = Job.fetch(job_key, connection=conn)
+
+    if job.is_finished:
+        return str(job.result), 200
+    else:
+        return "Nay!", 202
 
 
 @app.route('/forms', methods=['GET', 'POST'])
