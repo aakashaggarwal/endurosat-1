@@ -1,83 +1,36 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDE</title>
 
-{% block content %}
-<!-- Use Flask-WTF to generate form fields -->
-<div class="container column is-8 is-offset-2">
-    <div id="self-code" >
-        <label class="label"> Code (Use single quotes, and use req as an input, req is what will also be the output variable)</label>
-        <textarea name='code' class="input" id="code">
+    <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
 
-        </textarea>
-        <button class="button is-link" id="launch">Launch the template</button>
-        <button class="button is-link" id="check-old">Check older code</button>
-
-
+    <div class="header"> Endurostat Code Editor</div>
+    <div class="control-panel">
+        Select Language:
+        &nbsp; &nbsp;
+        <select id="languages" class="languages" onchange="changeLanguage()">
+            <option value="c"> C </option>
+            <option value="cpp"> C++ </option>
+            <option value="php"> PHP </option>
+           <option value="python"> Python </option>
+            <option value="node"> Node JS </option>
+        </select>
     </div>
+    <div class="editor" id="editor"></div>
 
-    <div id="self-loader" style="display: none;">
-        <img src="https://media.giphy.com/media/3y0oCOkdKKRi0/giphy.gif" />
+    <div class="button-container">
+        <button class="btn" onclick="executeCode()"> Run </button>
     </div>
+  <div class="output"></div>
 
-    <div id="self-form" style="display: none;">
-        <label class="label">Enter the value for the request variable.</label>
-        <input type="text" class="input"  id="req_value">
-        <button class="button is-link" id="run-code">Run your code</button>
-        <div id="response"> </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="static/js/ace/ace.js"></script>
+    <script src="static/js/ace/theme-monokai.js"></script>
+    <script src="static/js/ide.js"></script>
 
-    </div>
-</div>
-
-<script type="text/javascript">
-    $('#launch').click(function(){
-        var code = $('#code').val();
-        var saveData = $.ajax({
-          type: 'POST',
-          url: "/launch?code="+encodeURIComponent(code),
-          dataType: "json",
-          success: function(resultData) {  }
-        });
-        $('#self-code').hide();
-        $('#self-loader').show();
-
-        setTimeout(function(){
-          $('#self-loader').hide();
-          $('#self-form').show();
-        }, 25000);
-
-    });
-
-    $('#check-old').click(function(){
-        $('#self-code').hide();
-        $('#self-form').show();
-    });
-
-    $('#run-code').click(function(){
-        var saveData = $.ajax({
-          type: 'POST',
-          url: "/result?string_value="+$('#req_value').val(),
-          success: function(resultData) {
-            var url = window.location.origin+'/results/'+resultData
-            $('#response').html("Please go to "+ url + " for the result ")
-        }
-        });
-
-        // var url = "http://134.209.128.19:8080/function/hello-python";
-
-        // var xhr = new XMLHttpRequest();
-        // xhr.open("POST", url);
-
-        // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        // xhr.onreadystatechange = function () {
-        //    if (xhr.readyState === 4) {
-        //       $('#response').html(xhr.responseText);
-        //    }};
-
-        // var data = $('#req_value').val();
-
-        // xhr.send(data);
-
-
-    });
-</script>
-{% endblock %}
+</body>
+</html>
