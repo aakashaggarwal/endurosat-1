@@ -45,7 +45,7 @@ def launch():
 
     final_lines = ''
     for line in code_lines:
-        final_lines = final_lines + line + "\n\t"
+        final_lines = final_lines + line.strip() + "\n\t"
 
     print(final_lines)
     # Writing a string to file
