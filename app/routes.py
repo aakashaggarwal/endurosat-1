@@ -49,7 +49,7 @@ def launch():
 
     print(final_lines)
     # Writing a string to file
-    file1.write(jsonData['code'])
+    file1.write(final_lines)
     file1.close()
     os.system("faas-cli build -f ./hello-python.yml; faas-cli push -f ./hello-python.yml; faas-cli deploy -f ./hello-python.yml")
     return {
