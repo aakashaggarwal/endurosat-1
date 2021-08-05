@@ -44,6 +44,7 @@
     
 <script type="text/javascript">
     $( document ).ready(function() {
+        var editor = ace.edit("editor");
         var L = "def handle(req): \n"
         L = L +"\t" + "return req"
         editor.setValue(L);
