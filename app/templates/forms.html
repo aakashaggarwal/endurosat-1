@@ -15,7 +15,8 @@
                <option value="python"> Python </option>
             </select>
         </div>
-        <div class="editor" id="editor"></div>
+        <div class="editor" id="editor">
+        </div>
     
         <button class="button is-link" id="launch">Launch the template</button>
         <button class="button is-link" id="check-old">Check older code</button>
@@ -42,9 +43,11 @@
     <script src="static/js/ide.js"></script>
     
 <script type="text/javascript">
-
+    var L = "def handle(req): \n"
+    L = L +"\t" + "return req"
+    editor.setValue(L);
     $('#launch').click(function(){
-        var code = $('#editor').val();
+        var code = editor.getValue();
         var saveData = $.ajax({
           type: 'POST',
           url: "/launch?code="+encodeURIComponent(code),
