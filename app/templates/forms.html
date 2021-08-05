@@ -43,9 +43,12 @@
     <script src="static/js/ide.js"></script>
     
 <script type="text/javascript">
-    var L = "def handle(req): \n"
-    L = L +"\t" + "return req"
-    editor.setValue(L);
+    $( document ).ready(function() {
+        var L = "def handle(req): \n"
+        L = L +"\t" + "return req"
+        editor.setValue(L);
+    });
+    
     $('#launch').click(function(){
         var code = editor.getValue();
         var saveData = $.ajax({
