@@ -41,19 +41,15 @@ def result():
 def launch():
     file1 = open('hello-python/handler.py', 'w')
     jsonData = request.args
-    code_lines = jsonData['code'].split("\n")
+    # code_lines = jsonData['code'].split("\n")
 
-    final_lines = ''
-    for line in code_lines:
-        final_lines = final_lines + line + "\n\t"
+    # final_lines = ''
+    # for line in code_lines:
+    #     final_lines = final_lines + line + "\n\t"
 
-    print(final_lines)
-    L = "def handle(req): \n"
-    L = L +"\t"+ final_lines +"\n"
-    L = L +"\t" + "return req"
-    print(L)
+    # print(final_lines)
     # Writing a string to file
-    file1.write(L)
+    file1.write(jsonData['code'])
     file1.close()
     os.system("faas-cli build -f ./hello-python.yml; faas-cli push -f ./hello-python.yml; faas-cli deploy -f ./hello-python.yml")
     return {
